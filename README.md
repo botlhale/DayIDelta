@@ -163,6 +163,45 @@ spark.table("my_catalog.time_series.dayidelta_obs").show()
 
 ---
 
+## SCD2 AI Chatbot 🤖
+
+DayIDelta now includes an **AI-powered chatbot** that helps users generate SQL statements and Python code for querying SCD2 tables. The chatbot understands natural language queries and automatically generates appropriate database queries.
+
+### Chatbot Features
+
+- **Natural Language Understanding**: Parse queries like "show me current data" or "compare data between Q3 and Q4"
+- **Multi-Query Support**: Current data, point-in-time historical, time series history, and data comparison queries
+- **Dual Output**: Generates both SQL statements and PySpark Python code
+- **Smart Parameter Extraction**: Automatically detects time periods, day_ids, and comparison parameters
+
+### Quick Chatbot Example
+
+```python
+from scd2_chatbot import SCD2Chatbot, TableSchema
+
+# Define your SCD2 table schema
+schema = TableSchema(
+    catalog="my_catalog",
+    schema="time_series",
+    table="sensor_readings", 
+    key_columns=["sensor_id", "timestamp", "location"],
+    tracked_columns=["temperature", "status"]
+)
+
+# Create chatbot and ask questions
+chatbot = SCD2Chatbot()
+response = chatbot.chat("show me all current data", schema)
+
+print("Generated SQL:")
+print(response.sql_query)
+print("\nGenerated Python:")
+print(response.python_code)
+```
+
+📖 **For complete chatbot documentation, see [SCD2_CHATBOT_README.md](SCD2_CHATBOT_README.md)**
+
+---
+
 ## Best Practices
 
 - **Call DayIDelta once per batch:** Each batch should represent a logical load or update.
