@@ -14,3 +14,7 @@ delta-spark>=1.0.0
 # Development and testing (optional)
 # pytest>=6.0.0
 # pytest-spark>=0.6.0
+
+# SCD2 AI Chatbot dependencies:
+# The chatbot uses only Python standard library (re, datetime, dataclasses, enum)
+# No additional dependencies required beyond PySpark
