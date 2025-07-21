@@ -26,13 +26,23 @@ DayIDelta is a robust and production-ready Python function for maintaining **slo
 
 ## Usage
 
+DayIDelta supports multiple Spark platforms. Choose the appropriate setup for your environment:
+
+### Supported Platforms
+- **Microsoft Fabric** (Original implementation)
+- **Azure Databricks Unity Catalog** (New implementation)
+- **Azure Synapse Analytics**
+- **Other Spark 3.x with Delta Lake**
+
 ### 1. Prerequisites
 
-- Spark 3.x with Delta Lake enabled (Databricks, Azure Synapse, or Microsoft Fabric with lakehouse capability).
-- Python 3.x.
-- The `DayIDelta.py` script in your working directory, or accessible as a resource in your environment.
+- Spark 3.x with Delta Lake enabled
+- Python 3.x
+- The `DayIDelta.py` script in your working directory or accessible in your environment
 
-### 2. Microsoft Fabric Setup
+### 2. Platform-Specific Setup
+
+#### Microsoft Fabric Setup
 
 If you are running in **Microsoft Fabric**:
 
@@ -46,6 +56,35 @@ If you are running in **Microsoft Fabric**:
     from env.DayIDelta import DayIDelta
     ```
 
+#### Azure Databricks Unity Catalog Setup
+
+If you are running on **Azure Databricks with Unity Catalog**:
+
+1. **Upload `DayIDelta.py`** to your Databricks workspace or cluster libraries.
+2. **Ensure Unity Catalog is enabled** and you have appropriate permissions.
+3. **Configure your Spark session** with Delta Lake extensions:
+
+    ```python
+    from pyspark.sql import SparkSession
+    
+    spark = SparkSession.builder \
+        .appName("DayIDelta Unity Catalog") \
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+        .getOrCreate()
+    ```
+
+4. **Import and setup** as follows:
+
+    ```python
+    from DayIDelta import DayIDelta, setup_unity_catalog_environment
+    
+    # Setup catalog and schema
+    setup_unity_catalog_environment(spark, "my_catalog", "my_schema")
+    ```
+
+📖 **For detailed Unity Catalog instructions, see [README_Unity_Catalog.md](README_Unity_Catalog.md)**
+
 ---
 
 ### 3. Table Setup
@@ -55,7 +94,9 @@ If you are running in **Microsoft Fabric**:
 
 ---
 
-### 4. Example (PySpark & Fabric)
+### 4. Example Usage
+
+#### Microsoft Fabric Example
 
 ```python
 from env.DayIDelta import DayIDelta
@@ -80,22 +121,44 @@ DayIDelta(
     dest_tb_obs="dayidelta_obs"
 )
 
-# Example batch 2 (new TS1 timestamp, TS2 unchanged)
-df2 = spark.createDataFrame([
-    ("TS1", datetime(2025, 6, 23, 0, 30), "SRC1", 1.99),
+# View results
+spark.table("dbo.dayidelta_obs").show()
+```
+
+#### Unity Catalog Example
+
+```python
+from DayIDelta import DayIDelta, setup_unity_catalog_environment
+from pyspark.sql import SparkSession
+from datetime import datetime, timedelta
+
+# Configure Spark for Unity Catalog
+spark = SparkSession.builder \
+    .appName("DayIDelta Unity Catalog") \
+    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
+    .getOrCreate()
+
+# Setup Unity Catalog environment
+setup_unity_catalog_environment(spark, "my_catalog", "time_series")
+
+# Example batch 1
+df1 = spark.createDataFrame([
+    ("TS1", datetime(2025, 6, 23, 0, 0), "SRC1", 1.11),
     ("TS2", datetime(2025, 6, 23, 4, 0), "SRC1", 2.22),
 ], ["TIME_SERIES_NAME", "DATETIME", "DATA_SOURCE", "VALUE"])
 
 DayIDelta(
-    new_data_df=df2,
+    new_data_df=df1,
     key_cols=["TIME_SERIES_NAME", "DATETIME", "DATA_SOURCE"],
     tracked_cols=["VALUE"],
-    dest_sch="dbo",
+    dest_catalog="my_catalog",
+    dest_sch="time_series",
     dest_tb_obs="dayidelta_obs"
 )
 
 # View results
-spark.table("dbo.dayidelta_obs").show()
+spark.table("my_catalog.time_series.dayidelta_obs").show()
 ```
 
 ---
