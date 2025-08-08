@@ -5,6 +5,9 @@ SCD2 Chatbot CLI
 Command-line interface for the SCD2 AI Chatbot.
 Allows quick generation of SQL and Python code for SCD2 queries.
 
+This module now uses the new modular DayIDelta structure for improved maintainability
+while preserving the original API for backward compatibility.
+
 Usage:
     python chatbot_cli.py <catalog> <schema> <table> <key_cols> <tracked_cols> [query]
     
@@ -13,9 +16,33 @@ Examples:
     python chatbot_cli.py sensors prod readings "sensor_id,timestamp" "temperature" 
 """
 
-import sys
-import argparse
-from scd2_chatbot import SCD2Chatbot, TableSchema, quick_query
+# Use the new modular structure
+try:
+    from dayidelta.agents.cli import main, SCD2CLI
+    from dayidelta.core.models import TableSchema
+    DAYIDELTA_CLI_AVAILABLE = True
+except ImportError:
+    # Fallback to original implementation
+    DAYIDELTA_CLI_AVAILABLE = False
+
+if not DAYIDELTA_CLI_AVAILABLE:
+    # Fallback implementation
+    import sys
+    import argparse
+    
+    def main():
+        """Fallback main function."""
+        print("❌ Error: The new modular DayIDelta CLI is not available.")
+        print("Please install the dayidelta package or use:")
+        print("  python -m dayidelta.agents.cli")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    if DAYIDELTA_CLI_AVAILABLE:
+        main()
+    else:
+        main()  # Will show the error message
 
 
 def parse_args():
