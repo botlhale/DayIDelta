@@ -1,4 +1,6 @@
-![DayIDelta logo](dayidelta_logo.png)
+<div align="center">
+  <img src="logos/dayidelta_logo.png" alt="GQ to BIS LBS Logo" width="250"/>
+</div>
 
 # DayIDelta  
 Production-grade SCD2 management for time series data in Delta Lake across Spark platforms (Microsoft Fabric, Azure Databricks Unity Catalog, Synapse, generic Spark 3.x) — with an AI assistant for instant point-in-time and comparison queries.
