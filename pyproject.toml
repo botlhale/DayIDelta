@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dayidelta"  # Reserved for future PyPI publishing
+version = "0.0.0.dev0"
+description = "Deterministic SCD2 management for time series data in Delta Lake with AI-assisted query generation."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "13668754 Canada Inc" }
+]
+requires-python = ">=3.9"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Database",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Scientific/Engineering :: Information Analysis"
+]
+
+dependencies = [
+  # "pyspark>=3.4.0",   # Consider leaving unpinned or mild pin
+  # "delta-spark>=3.0.0"  # Only if required directly
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "black",
+  "ruff",
+  "mypy; python_version >= '3.9'",  # optional
+  "build",
+  "twine"
+]
+
+[project.urls]
+Homepage = "https://github.com/botlhale/DayIDelta"
+Documentation = "https://github.com/botlhale/DayIDelta/tree/main/docs"
+Repository = "https://github.com/botlhale/DayIDelta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+
+[tool.ruff]
+line-length = 100
+select = ["E","F","W","I","B","UP"]
+ignore = ["E501"]  # if you want to allow longer lines
+exclude = ["build", "dist"]
+
+[tool.ruff.isort]
+known-first-party = ["dayidelta"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+
+[tool.mypy]
+python_version = "3.9"
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
