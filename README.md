@@ -42,10 +42,14 @@ pip install -e ".[dev]"
 Minimal usage:
 ```python
 from pyspark.sql import SparkSession
-from dayidelta import DayIDelta
+# Use the modern modular import structure
+from dayidelta import DayIDelta, setup_unity_catalog_environment
 from datetime import datetime
 
 spark = SparkSession.builder.getOrCreate()
+
+# Setup Unity Catalog environment
+setup_unity_catalog_environment(spark, "my_catalog", "time_series_schema")
 
 batch1 = spark.createDataFrame([
     ("TS1", datetime(2025, 6, 23, 0, 0), "SRC1", 1.11),
@@ -80,7 +84,8 @@ setup_unity_catalog_environment(spark, "my_catalog", "time_series")
 ## AI Chatbot Highlight 🤖
 Accelerate analytics with natural language:
 ```python
-from dayidelta.chatbot import SCD2Chatbot, TableSchema
+from dayidelta.agents.chatbot import SCD2Chatbot  
+from dayidelta.core.models import TableSchema
 
 schema = TableSchema(
     catalog="my_catalog",

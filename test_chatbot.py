@@ -7,10 +7,18 @@ query parsing, SQL generation, and Python code generation.
 
 import unittest
 from datetime import datetime
-from scd2_chatbot import (
-    SCD2Chatbot, TableSchema, QueryType, QueryRequest, QueryResponse,
-    SCD2QueryPatterns, quick_query
-)
+
+# Use modular imports - this provides better maintainability and functionality
+try:
+    from dayidelta.agents.chatbot import SCD2Chatbot, quick_query
+    from dayidelta.core.models import TableSchema, QueryType, QueryRequest, QueryResponse  
+    from dayidelta.query.patterns import SCD2QueryPatterns
+except ImportError:
+    # Fallback to legacy imports if modular structure not available
+    from scd2_chatbot import (
+        SCD2Chatbot, TableSchema, QueryType, QueryRequest, QueryResponse,
+        SCD2QueryPatterns, quick_query
+    )
 
 
 class TestTableSchema(unittest.TestCase):

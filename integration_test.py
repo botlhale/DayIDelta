@@ -12,7 +12,14 @@ In a real environment, you would have SparkSession configured.
 """
 
 from datetime import datetime, timedelta
-from scd2_chatbot import SCD2Chatbot, TableSchema, quick_query
+
+# Use modular imports - this provides better maintainability and functionality
+try:
+    from dayidelta.agents.chatbot import SCD2Chatbot, quick_query
+    from dayidelta.core.models import TableSchema
+except ImportError:
+    # Fallback to legacy imports if modular structure not available
+    from scd2_chatbot import SCD2Chatbot, TableSchema, quick_query
 
 
 def create_sample_schema():
