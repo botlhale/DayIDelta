@@ -1,0 +1,26 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="320" y2="320" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1F6FEB"/>
+      <stop offset="1" stop-color="#39E3E3"/>
+    </linearGradient>
+    <linearGradient id="delta" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB800"/>
+      <stop offset="1" stop-color="#FF8200"/>
+    </linearGradient>
+  </defs>
+  <!-- Hexagon Spark/Delta Lake shape -->
+  <polygon points="160,35 280,95 280,225 160,285 40,225 40,95"
+    fill="url(#bg)" stroke="#114488" stroke-width="5"/>
+  <!-- Calendar page -->
+  <rect x="85" y="80" width="150" height="120" rx="15" fill="#fff" stroke="#222" stroke-width="4"/>
+  <!-- "Delta" Greek symbol -->
+  <text x="160" y="145" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
+        font-size="72" font-weight="bold" fill="url(#delta)" dominant-baseline="middle">Δ</text>
+  <!-- Day IDs (like 0, 14, 15, …) -->
+  <text x="160" y="185" text-anchor="middle" font-family="Menlo, monospace"
+        font-size="23" font-weight="bold" fill="#1F6FEB">0  14  15  16</text>
+  <!-- Project Name (moved lower) -->
+  <text x="160" y="315" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
+        font-size="32" font-weight="bold" fill="#114488" letter-spacing="2">DayIDelta</text>
+</svg>
