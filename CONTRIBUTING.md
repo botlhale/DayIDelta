@@ -20,9 +20,36 @@ Thank you for your interest in improving DayIDelta! This guide explains how to s
 Be respectful. Harassment of any kind is not tolerated. (If CODE_OF_CONDUCT.md exists, it governs.)
 
 ## 2. Architecture Overview
-Core SCD2 logic lives in `src/dayidelta/` (core, dimension management, environment helpers).
-Chatbot logic in `src/dayidelta/chatbot/` (schema abstraction, parsing, pattern generation).
-Docs in `docs/` and examples in `examples/`.
+
+**DayIDelta uses a modern modular architecture** for maintainability and extensibility:
+
+```
+dayidelta/                    # Main package
+├── core/                    # Platform-agnostic SCD2 engine
+│   ├── scd2_engine.py      # Core SCD2 logic and DayIDelta function
+│   ├── models.py           # Data models and configuration classes
+│   └── interfaces.py       # Platform adapter interfaces
+├── platforms/              # Platform-specific implementations  
+│   ├── unity_catalog.py    # Azure Databricks Unity Catalog
+│   ├── fabric.py           # Microsoft Fabric
+│   └── base.py             # Base platform adapter
+├── agents/                 # AI agents and interfaces
+│   ├── chatbot.py          # SCD2 AI chatbot for query generation
+│   └── cli.py              # Command-line interface
+├── query/                  # Query generation and parsing
+│   ├── generators.py       # SQL and Python code generators
+│   ├── parsers.py          # Natural language query parsing
+│   └── patterns.py         # SCD2 query patterns and templates
+├── utils/                  # Utilities and validation
+│   └── validation.py       # Input validation and SQL sanitization
+└── tests/                  # Comprehensive test suite
+    ├── test_core/          # Core engine tests
+    ├── test_platforms/     # Platform adapter tests
+    ├── test_agents/        # Chatbot and CLI tests
+    └── test_query/         # Query generation tests
+```
+
+**Legacy Structure**: Files like `DayIDelta.py`, `scd2_chatbot.py` in the root directory have been superseded by the modular structure. See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for migration instructions.
 
 ## 3. Development Environment
 Requirements:
@@ -40,14 +67,34 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 ```
 
+**Working with the modular structure:**
+```python
+# Import from the modular structure
+from dayidelta.core.scd2_engine import SCD2Engine, DayIDelta
+from dayidelta.agents.chatbot import SCD2Chatbot
+from dayidelta.platforms.unity_catalog import UnityCatalogAdapter
+
+# Or use convenient top-level imports
+from dayidelta import DayIDelta, SCD2Chatbot, setup_unity_catalog_environment
+```
+
 ## 5. Running Tests
 ```bash
+# Run all tests (requires PySpark for core/platform tests)
 pytest -q
-```
-For coverage:
-```bash
+
+# Run tests that don't require PySpark
+pytest dayidelta/tests/test_query/ dayidelta/tests/test_agents/ -v
+
+# Run with coverage
 pytest --cov=dayidelta --cov-report=term-missing
 ```
+
+**Test Organization:**
+- `dayidelta/tests/test_core/` - Core SCD2 engine tests
+- `dayidelta/tests/test_platforms/` - Platform adapter tests  
+- `dayidelta/tests/test_agents/` - Chatbot and CLI tests
+- `dayidelta/tests/test_query/` - Query generation tests
 
 ## 6. Linting & Formatting
 Tools:

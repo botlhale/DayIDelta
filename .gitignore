@@ -79,3 +79,6 @@ Thumbs.db
 *.temp
 tmp/
 temp/
+
+# Legacy files (archived, don't track changes)
+legacy_files/

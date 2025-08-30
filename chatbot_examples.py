@@ -6,7 +6,13 @@ Interactive examples demonstrating the SCD2 AI Chatbot functionality
 for generating SQL and Python code to query SCD2 tables.
 """
 
-from scd2_chatbot import SCD2Chatbot, TableSchema, quick_query, QueryType
+# Use modular imports - this provides better maintainability and functionality
+try:
+    from dayidelta.agents.chatbot import SCD2Chatbot, quick_query
+    from dayidelta.core.models import TableSchema, QueryType
+except ImportError:
+    # Fallback to legacy imports if modular structure not available
+    from scd2_chatbot import SCD2Chatbot, TableSchema, quick_query, QueryType
 
 def print_separator(title):
     """Print a formatted separator."""
