@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,7 @@ name = "dayidelta"  # Reserved for future PyPI publishing
 version = "0.0.0.dev0"
 description = "Deterministic SCD2 management for time series data in Delta Lake with AI-assisted query generation."
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
   { name = "13668754 Canada Inc" }
 ]
@@ -17,7 +17,6 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
-  "License :: OSI Approved :: MIT License",
   "Intended Audience :: Developers",
   "Topic :: Database",
   "Topic :: Software Development :: Libraries",
@@ -46,10 +45,9 @@ Documentation = "https://github.com/botlhale/DayIDelta/tree/main/docs"
 Repository = "https://github.com/botlhale/DayIDelta"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
 
 [tool.setuptools]
-package-dir = {"" = "src"}
 
 [tool.black]
 line-length = 100
